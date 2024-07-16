@@ -106,7 +106,7 @@ bool timeDisplay = true;          // Flaga określająca kiedy pokazać czas na 
 bool listedStations = false;      // Flaga określająca czy na ekranie jest pokazana lista stacji do wyboru
 bool menuEnable = false;          // Flaga określająca czy na ekranie można wyświetlić menu
 unsigned long lastDebounceTime = 0;       // Czas ostatniego debouncingu
-unsigned long debounceDelay = 200;        // Czas trwania debouncingu w milisekundach
+unsigned long debounceDelay = 300;        // Czas trwania debouncingu w milisekundach
 unsigned long displayTimeout = 3000;      // Czas wyświetlania komunikatu na ekranie w milisekundach
 unsigned long displayStartTime = 0;       // Czas rozpoczęcia wyświetlania komunikatu
 unsigned long seconds = 0;                // Licznik sekund timera
@@ -460,7 +460,7 @@ void audio_info(const char *info)
     if (sampleRateIndex != -1)
     {
         sampleRateString = infoStr.substring(sampleRateIndex + 11, infoStr.indexOf('\n', sampleRateIndex));
-        sampleRateString = String(sampleRateString.toFloat() / 1000.0, 1) + "kHz"; // Convert to kHz
+        sampleRateString = String(sampleRateString.toFloat() / 1000.0, 1) + "kHz  "; // Convert to kHz
     }
 
     // Extract "BitsPerSample:"
@@ -512,7 +512,10 @@ void audio_info(const char *info)
         display.println(sampleRateString + " " + bitsPerSampleString + "bit");
 
         display.setCursor(0, 47);
-        display.println(bitrateString + "  Bank " + String(bank_nr));
+        display.println(bitrateString + " Bank " + String(bank_nr));
+        //display.println(bitrateString);
+        //display.setCursor(72, 47);
+        //display.println("Bank " + String(bank_nr));
 
         display.fillRect(51, 56, 76, 8, SH110X_BLACK);
         display.setCursor(66, 56);
@@ -1145,9 +1148,9 @@ void playFromSelectedFolder()
         }
 
         display.setCursor(0, 37);
-        display.println(sampleRateString + "kHz " + bitsPerSampleString + "bit");
+        display.println(sampleRateString + bitsPerSampleString + "bit");
         display.setCursor(0, 47);
-        display.println(bitrateString + "kb/s Plik " + String(fileIndex) + "/" + String(totalFilesInFolder));
+        display.println(bitrateString + "Plik " + String(fileIndex) + "/" + String(totalFilesInFolder));
         display.setCursor(66, 56);
         display.println("Folder " + String(folderIndex));
         display.display();
@@ -1707,7 +1710,7 @@ void loop()
     display.setCursor(0, 10);
     display.println(stationString);
     display.setCursor(0, 37);
-    display.println(sampleRateString + "kHz " + bitsPerSampleString + "bit");
+    display.println(sampleRateString + bitsPerSampleString + "bit");
 
     display.setCursor(102, 37);
     if (mp3 == true)
@@ -1724,7 +1727,7 @@ void loop()
     }
     
     display.setCursor(0, 47);
-    display.println(bitrateString + "kb/s  Bank " + String(bankFromBuffer));
+    display.println(bitrateString + "  Bank " + String(bankFromBuffer));
     display.setCursor(66, 56);
     display.println("Stacja " + String(stationFromBuffer));
     display.display();
