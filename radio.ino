@@ -460,7 +460,7 @@ void audio_info(const char *info)
     if (sampleRateIndex != -1)
     {
         sampleRateString = infoStr.substring(sampleRateIndex + 11, infoStr.indexOf('\n', sampleRateIndex));
-        sampleRateString = String(sampleRateString.toFloat() / 1000.0, 1) + "kHz  "; // Convert to kHz
+        sampleRateString = String(sampleRateString.toFloat() / 1000.0, 0) + "kHz  "; // Convert to kHz
     }
 
     // Extract "BitsPerSample:"
@@ -509,17 +509,10 @@ void audio_info(const char *info)
     {
         display.fillRect(0, 37, 128, 18, SH110X_BLACK);
         display.setCursor(0, 37);
-        display.println(sampleRateString + " " + bitsPerSampleString + "bit");
+        display.println(sampleRateString + " " + bitrateString);
 
         display.setCursor(0, 47);
-        display.println(bitrateString + " Bank " + String(bank_nr));
-        //display.println(bitrateString);
-        //display.setCursor(72, 47);
-        //display.println("Bank " + String(bank_nr));
-
-        display.fillRect(51, 56, 76, 8, SH110X_BLACK);
-        display.setCursor(66, 56);
-        display.println("Stacja " + String(station_nr));
+        display.println("Bank " + String(bank_nr) + "  " + "Stacja " + String(station_nr));
     }
     else if (currentOption == PLAY_FILES)
     {
@@ -532,7 +525,7 @@ void audio_info(const char *info)
 
         display.fillRect(0, 37, 128, 18, SH110X_BLACK);
         display.setCursor(0, 37);
-        display.println(sampleRateString + " " + bitsPerSampleString + "bit");
+        display.println(sampleRateString + " " + bitrateString);
 
         display.setCursor(0, 47);
         display.println(bitrateString + " Plik " + String(fileIndex) + "/" + String(totalFilesInFolder));
@@ -1710,7 +1703,7 @@ void loop()
     display.setCursor(0, 10);
     display.println(stationString);
     display.setCursor(0, 37);
-    display.println(sampleRateString + bitsPerSampleString + "bit");
+    display.println(sampleRateString + " " + bitrateString);
 
     display.setCursor(102, 37);
     if (mp3 == true)
@@ -1727,9 +1720,7 @@ void loop()
     }
     
     display.setCursor(0, 47);
-    display.println(bitrateString + "  Bank " + String(bankFromBuffer));
-    display.setCursor(66, 56);
-    display.println("Stacja " + String(stationFromBuffer));
+    display.println("Bank " + String(bank_nr) + "  " + "Stacja " + String(station_nr));
     display.display();
     displayActive = false;
     timeDisplay = true;
